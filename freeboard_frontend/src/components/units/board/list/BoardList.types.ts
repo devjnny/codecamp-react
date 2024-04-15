@@ -5,3 +5,5 @@ export interface IBoardListProps {
 	onClickMove: (boardId: string) => void
 	onClickWrite: () => void
 }
+
+//

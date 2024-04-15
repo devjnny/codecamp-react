@@ -10,7 +10,7 @@ import type {
 	IMutationCreateBoardCommentArgs,
 	IMutationUpdateBoardCommentArgs,
 } from '@/src/commons/types/generated/types'
-import { IBoardCommentWriteProps, IBoardCommnetWrite } from './BoardCommentWrite.types'
+import type { IBoardCommentWriteProps, IBoardCommnetWrite } from './BoardCommentWrite.types'
 
 export default function BoardCommentWrite({
 	children,
@@ -55,25 +55,27 @@ export default function BoardCommentWrite({
 
 	const onUpdate = async (data: IBoardCommnetWrite) => {
 		try {
-			const result = await updateBoardComment({
-				variables: {
-					boardCommentId: comment?._id!,
-					updateBoardCommentInput: {
-						contents: data.contents,
-						rating: Number(data.rating),
+			if (comment?._id) {
+				const result = await updateBoardComment({
+					variables: {
+						boardCommentId: comment?._id,
+						updateBoardCommentInput: {
+							contents: data.contents,
+							rating: Number(data.rating),
+						},
+						password: data.password,
 					},
-					password: data.password,
-				},
-				refetchQueries: [
-					{
-						query: FETCH_BOARD_COMMENTS,
-						variables: { boardId: router.query.boardId },
-					},
-				],
-			})
-			onClickEdit?.()
-			console.log(result)
-			reset() // form reset
+					refetchQueries: [
+						{
+							query: FETCH_BOARD_COMMENTS,
+							variables: { boardId: router.query.boardId },
+						},
+					],
+				})
+				onClickEdit?.()
+				console.log(result)
+				reset() // form reset
+			}
 		} catch (error) {
 			alert(error)
 		}
@@ -114,9 +116,9 @@ export default function BoardCommentWrite({
 			handleSubmit={handleSubmit}
 			errors={errors}
 			watch={watch}
-			onSubmit={Boolean(!!comment) ? onUpdate : onSubmit}
-			children={children}
-			isEdit={Boolean(!!comment)}
-		/>
+			onSubmit={comment ? onUpdate : onSubmit}
+			isEdit={!!comment}>
+			{children}
+		</BoardCommentWriteUI>
 	)
 }

@@ -1,5 +1,3 @@
-import { IBoardCommnetWrite } from '../write/BoardCommentWrite.types'
-
 export interface IRating {
 	type: 'radio'
 	key: number

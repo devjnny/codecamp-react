@@ -1,7 +1,15 @@
+import YouTube from 'react-youtube'
 import * as S from './BoardDetail.styles'
 import type { IBoardDetailProps } from './BoardDetail.types'
 
-export default function BoardDetailUI({ data, onClickDelete, onClickEdit }: IBoardDetailProps) {
+export default function BoardDetailUI({
+	data,
+	onClickDelete,
+	onClickEdit,
+	onClickLike,
+	onClickDislike,
+	likeState,
+}: IBoardDetailProps) {
 	return (
 		<S.Wrapper>
 			<S.ContentWrapper>
@@ -28,13 +36,21 @@ export default function BoardDetailUI({ data, onClickDelete, onClickEdit }: IBoa
 						<img src="" alt="" />
 					</S.ContentImg>
 					<S.Content>{data?.fetchBoard.contents}</S.Content>
-					<S.Video></S.Video>
+					<S.Video>
+						<YouTube
+							videoId={data?.fetchBoard.youtubeUrl ?? ''}
+							opts={{
+								width: '486',
+								height: '240',
+							}}
+						/>
+					</S.Video>
 					<S.ButtonWrapper>
-						<S.GoodButton type="button">
-							<span>1920</span>
+						<S.GoodButton type="button" onClick={onClickLike} className={likeState}>
+							<span>{data?.fetchBoard.likeCount}</span>
 						</S.GoodButton>
-						<S.BadButton type="button">
-							<span>1920</span>
+						<S.BadButton type="button" onClick={onClickDislike} className={likeState}>
+							<span>{data?.fetchBoard.dislikeCount}</span>
 						</S.BadButton>
 					</S.ButtonWrapper>
 				</S.Contents>

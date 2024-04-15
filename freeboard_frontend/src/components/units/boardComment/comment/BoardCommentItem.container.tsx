@@ -3,7 +3,7 @@ import BoardCommentItemUI from './BoardCommentItem.presenter'
 import { useState } from 'react'
 
 export default function BoardCommentItem({ comment }: { comment: IBoardComment }) {
-	const [isEdit, setEdit] = useState<Boolean>(false)
+	const [isEdit, setEdit] = useState<boolean>(false)
 
 	const onClickEdit = () => {
 		setEdit((prev) => !prev)

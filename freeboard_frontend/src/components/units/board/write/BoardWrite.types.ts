@@ -1,5 +1,5 @@
 import type { ICreateBoardInput } from '@/src/commons/types/generated/types'
-import { FieldErrors, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import type { FieldErrors, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 
 interface IFetchBoard {
 	fetchBoard: ICreateBoardInput

@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import Rating from '../Rating/Rating.container'
 import * as S from './BoardCommentItem.styles'
 import { StarButtonWrapper } from '../Rating/Rating.styles'
-import { BoardCommentItemProps } from './BoardCommentItem.types'
+import type { BoardCommentItemProps } from './BoardCommentItem.types'
 import BoardCommentWrite from '../write/BoardCommentWrite.container'
 
 export default function BoardCommentItemUI({

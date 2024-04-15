@@ -1,6 +1,6 @@
-import { IBoardComment } from '@/src/commons/types/generated/types'
-import { ReactNode } from 'react'
-import {
+import type { IBoardComment } from '@/src/commons/types/generated/types'
+import type { ReactNode } from 'react'
+import type {
 	Control,
 	FieldErrors,
 	UseFormHandleSubmit,
