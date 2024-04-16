@@ -4,4 +4,5 @@ export interface BoardCommentItemProps {
 	comment: IBoardComment
 	isEdit: boolean
 	onClickEdit: () => void
+	onClickDelete: () => void
 }

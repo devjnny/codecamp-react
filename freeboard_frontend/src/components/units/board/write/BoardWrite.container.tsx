@@ -4,18 +4,48 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { CREATE_BOARD, UPDATE_BOARD } from './BoardWrite.queries'
 import BoardWriteUI from './BoardWrite.presenter'
-import type { IBoardWriteProps } from './BoardWrite.types'
-import type { ICreateBoardInput } from '@/src/commons/types/generated/types'
+import type { IBoardWriteProps, IPostcode, IUpdateBoardInput } from './BoardWrite.types'
+import type {
+	ICreateBoardInput,
+	IMutation,
+	IMutationCreateBoardArgs,
+	IMutationUpdateBoardArgs,
+} from '@/src/commons/types/generated/types'
 
 export default function BoardWrite({ isEdit, data }: IBoardWriteProps) {
 	const router = useRouter()
-	const [createBoard] = useMutation(CREATE_BOARD)
-	const [updateBoard] = useMutation(UPDATE_BOARD)
-	const [isActive, setIsActive] = useState(false) // 등록하기 버튼 활성화 여부
+	const [createBoard] = useMutation<Pick<IMutation, 'createBoard'>, IMutationCreateBoardArgs>(
+		CREATE_BOARD
+	)
+	const [updateBoard] = useMutation<Pick<IMutation, 'updateBoard'>, IMutationUpdateBoardArgs>(
+		UPDATE_BOARD
+	)
+	const [isActive, setIsActive] = useState<boolean>(false) // 등록하기 버튼 활성화 여부
+	const [showDialog, setShowDialog] = useState<boolean>(false) // 우편번호 검색 모달 상태값
+
+	const handlePostcodeDialog = () => {
+		// 우편번호 검색 모달 오픈
+		setShowDialog(true)
+	}
+	const handlePostcodeDialogCancel = () => {
+		// 우편번호 검색 모달 취소버튼/닫기
+		setShowDialog(false)
+	}
+
+	const handlePostcode = (data: IPostcode) => {
+		// 우편번호 검색 완료
+		if (data) {
+			setShowDialog(false)
+			setValue('boardAddress.zipcode', data?.zonecode)
+			setValue('boardAddress.address', data?.roadAddress)
+			setValue('boardAddress.addressDetail', '')
+		}
+	}
 
 	const {
 		control,
 		register,
+		setValue,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<ICreateBoardInput>({
@@ -25,6 +55,8 @@ export default function BoardWrite({ isEdit, data }: IBoardWriteProps) {
 			password: '',
 			title: data?.fetchBoard.title,
 			contents: data?.fetchBoard.contents,
+			boardAddress: data?.fetchBoard.boardAddress,
+			youtubeUrl: data?.fetchBoard.youtubeUrl,
 		},
 	})
 
@@ -39,21 +71,29 @@ export default function BoardWrite({ isEdit, data }: IBoardWriteProps) {
 	}, [watchedValue])
 
 	const onClickUpdate = async (data: ICreateBoardInput) => {
-		const updateBoardInput: { title?: string; contents?: string } = {}
-		if (data.title) updateBoardInput.title = data.title
-		if (data.contents) updateBoardInput.contents = data.contents
-		try {
-			const result = await updateBoard({
-				variables: {
-					updateBoardInput,
-					password: data.password,
-					boardId: router.query.boardId,
-				},
-			})
-			console.log(result)
-			void router.push(`/boards/${result.data.updateBoard._id}`)
-		} catch (error) {
-			alert(error)
+		if (typeof router.query.boardId === 'string') {
+			const updateBoardInput: IUpdateBoardInput = {}
+			if (data.title) updateBoardInput.title = data.title
+			if (data.contents) updateBoardInput.contents = data.contents
+			if (data.youtubeUrl) updateBoardInput.youtubeUrl = data.youtubeUrl
+			if (data.boardAddress)
+				updateBoardInput.boardAddress = {
+					zipcode: data.boardAddress.zipcode ?? '',
+					address: data.boardAddress.address ?? '',
+					addressDetail: data.boardAddress.addressDetail ?? '',
+				}
+			try {
+				const result = await updateBoard({
+					variables: {
+						updateBoardInput,
+						password: data.password,
+						boardId: router.query.boardId,
+					},
+				})
+				void router.push(`/boards/${result?.data?.updateBoard._id}`)
+			} catch (error) {
+				alert(error)
+			}
 		}
 	}
 
@@ -66,11 +106,17 @@ export default function BoardWrite({ isEdit, data }: IBoardWriteProps) {
 						password: data.password,
 						title: data.title,
 						contents: data.contents,
+						youtubeUrl: data.youtubeUrl,
+						boardAddress: {
+							zipcode: data.boardAddress?.zipcode,
+							address: data.boardAddress?.address,
+							addressDetail: data.boardAddress?.addressDetail,
+						},
 					},
 				},
 			})
 			console.log(result)
-			void router.push(`/boards/${result.data.createBoard._id}`)
+			void router.push(`/boards/${result?.data?.createBoard._id}`)
 		} catch (error) {
 			alert(error)
 		}
@@ -85,6 +131,10 @@ export default function BoardWrite({ isEdit, data }: IBoardWriteProps) {
 			onClickSubmit={onClickSubmit}
 			onClickUpdate={onClickUpdate}
 			isActive={isActive}
+			showDialog={showDialog}
+			handlePostcodeDialog={handlePostcodeDialog}
+			handlePostcodeDialogCancel={handlePostcodeDialogCancel}
+			handlePostcode={handlePostcode}
 		/>
 	)
 }

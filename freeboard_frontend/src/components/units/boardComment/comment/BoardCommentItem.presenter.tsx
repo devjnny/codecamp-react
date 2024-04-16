@@ -9,6 +9,7 @@ export default function BoardCommentItemUI({
 	comment,
 	isEdit,
 	onClickEdit,
+	onClickDelete,
 }: BoardCommentItemProps) {
 	const ref = useRef<HTMLInputElement>(null)
 
@@ -40,7 +41,7 @@ export default function BoardCommentItemUI({
 				<S.ModifyButton type="button" onClick={onClickEdit}>
 					<span className="hidden">수정</span>
 				</S.ModifyButton>
-				<S.DeleteButton type="button">
+				<S.DeleteButton type="button" onClick={onClickDelete}>
 					<span className="hidden">삭제</span>
 				</S.DeleteButton>
 			</S.CommentActionButtons>

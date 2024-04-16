@@ -1,3 +1,5 @@
+import Dialog from '../../common/Dialog'
+import Postcode from '../../common/Postcode'
 import * as S from './BoardWrite.styles'
 import type { IBoardWriteUIProps } from './BoardWrite.types'
 
@@ -9,6 +11,10 @@ export default function BoardWriteUI({
 	onClickSubmit,
 	onClickUpdate,
 	isActive,
+	showDialog,
+	handlePostcodeDialog,
+	handlePostcodeDialogCancel,
+	handlePostcode,
 }: IBoardWriteUIProps) {
 	return (
 		<S.Wrapper>
@@ -62,10 +68,17 @@ export default function BoardWriteUI({
 							{...register('boardAddress.zipcode', { required: false })}
 							type="text"
 							placeholder="07250"
+							readOnly
 						/>
-						<S.ZipcodeButton type="button">우편번호 검색</S.ZipcodeButton>
+						<S.ZipcodeButton type="button" onClick={handlePostcodeDialog}>
+							우편번호 검색
+						</S.ZipcodeButton>
 					</S.ZipcodeWrapper>
-					<S.FormInput {...register('boardAddress.address', { required: false })} type="text" />
+					<S.FormInput
+						{...register('boardAddress.address', { required: false })}
+						type="text"
+						readOnly
+					/>
 					<S.FormInput
 						{...register('boardAddress.addressDetail', { required: false })}
 						type="text"
@@ -118,6 +131,15 @@ export default function BoardWriteUI({
 					isActive={isActive}
 				/>
 			</S.FormsWrapper>
+			{showDialog && (
+				<Dialog
+					showCloseBtn={false}
+					showDialog={showDialog}
+					onClickOk={handlePostcodeDialog}
+					onClickCancel={handlePostcodeDialogCancel}>
+					<Postcode handlePostcode={handlePostcode} />
+				</Dialog>
+			)}
 		</S.Wrapper>
 	)
 }

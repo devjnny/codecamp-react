@@ -1,6 +1,7 @@
 import YouTube from 'react-youtube'
 import * as S from './BoardDetail.styles'
 import type { IBoardDetailProps } from './BoardDetail.types'
+import CommonTooltip from '../../common/Tooltip'
 
 export default function BoardDetailUI({
 	data,
@@ -25,9 +26,12 @@ export default function BoardDetailUI({
 						<S.FileButton type="button">
 							<span className="hidden">첨부파일</span>
 						</S.FileButton>
-						<S.LocationButton type="button">
-							<span className="hidden">위치정보</span>
-						</S.LocationButton>
+						<CommonTooltip
+							contents={`${data?.fetchBoard.boardAddress?.address} ${data?.fetchBoard.boardAddress?.addressDetail}`}>
+							<S.LocationButton type="button">
+								<span className="hidden">위치정보</span>
+							</S.LocationButton>
+						</CommonTooltip>
 					</div>
 				</S.Header>
 				<S.Contents>
@@ -38,7 +42,7 @@ export default function BoardDetailUI({
 					<S.Content>{data?.fetchBoard.contents}</S.Content>
 					<S.Video>
 						<YouTube
-							videoId={data?.fetchBoard.youtubeUrl ?? ''}
+							videoId={data?.fetchBoard.youtubeUrl?.split('=')[1] ?? ''}
 							opts={{
 								width: '486',
 								height: '240',

@@ -18,4 +18,24 @@ export interface IBoardWriteUIProps {
 	onClickSubmit: (data: ICreateBoardInput) => Promise<void>
 	onClickUpdate: (data: ICreateBoardInput) => Promise<void>
 	isActive: boolean
+	showDialog: boolean
+	handlePostcodeDialog: () => void
+	handlePostcodeDialogCancel: () => void
+	handlePostcode: (data: any) => void
+}
+
+export interface IPostcode {
+	zonecode: string
+	roadAddress: string
+}
+
+export interface IUpdateBoardInput {
+	title?: string
+	contents?: string
+	youtubeUrl?: string
+	boardAddress?: {
+		zipcode?: string
+		address?: string
+		addressDetail?: string
+	}
 }
