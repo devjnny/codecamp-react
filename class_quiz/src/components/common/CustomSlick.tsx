@@ -1,65 +1,119 @@
-import styled from "@emotion/styled";
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import styled from '@emotion/styled';
+import { Button } from 'antd';
+import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 60px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 1200px;
+	height: 1000px;
+	overflow: hidden;
 `;
 
 const SwiperContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
+	display: flex;
+	align-items: center;
+	width: 100%;
+
+	* {
+		width: 1200px;
+	}
 `;
 
-const SwiperItem = styled.div`
-  width: 100%;
-  height: 100%;
+const SwiperButtons = styled.div`
+	position: absolute;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
 `;
-
-const SwiperButtons = styled.div``;
 
 const SwiperPagination = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px;
+	display: flex;
+	justify-content: center;
+	gap: 4px;
+	width: 100%;
+	height: auto;
+	padding: 10px;
 `;
 
-export const CustomSlick = () => {
-  return (
-    <Wrapper>
-      <Container>
-        <SwiperContainer>
-          <SwiperItem>
-            <img src="/08/img01.png" alt="" />
-          </SwiperItem>
-          <SwiperItem>
-            <img src="/08/img02.jpg" alt="" />
-          </SwiperItem>
-          <SwiperItem>
-            <img src="/08/img03.jpg" alt="" />
-          </SwiperItem>
-        </SwiperContainer>
-        <SwiperButtons>
-          <button>이전</button>
-          <button>다음</button>
-        </SwiperButtons>
-        <SwiperPagination>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-        </SwiperPagination>
-      </Container>
-    </Wrapper>
-  );
+const PaginationButton = styled.button`
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #000;
+	opacity: 0.3;
+	border: none;
+
+	&.on {
+		opacity: 1;
+	}
+`;
+
+export const CustomSlick = ({ children }: { children: React.ReactNode }) => {
+	const numberOfChildren = React.Children.count(children);
+	const totalSlide = numberOfChildren - 1;
+
+	const [currentSlide, setCurrentSlide] = useState<number>(0);
+	const slideRef = useRef<HTMLDivElement>(null);
+
+	const onClickPrev = () => {
+		currentSlide === 0 ? setCurrentSlide(2) : setCurrentSlide((prev) => prev - 1);
+	};
+
+	const onClickNext = () => {
+		currentSlide >= totalSlide ? setCurrentSlide(0) : setCurrentSlide((prev) => prev + 1);
+	};
+
+	const onClickPagination = (index: number) => {
+		setCurrentSlide(index);
+	};
+
+	useEffect(() => {
+		if (slideRef.current) {
+			slideRef.current.style.transition = 'all 0.5s ease-in-out';
+			slideRef.current.style.transform = `translateX(-${currentSlide}00%)`;
+		}
+	}, [currentSlide]);
+
+	return (
+		<Wrapper>
+			<Container>
+				<SwiperContainer ref={slideRef}>{children}</SwiperContainer>
+				<SwiperButtons>
+					<Button type="text" icon={<LeftOutlined />} onClick={onClickPrev}>
+						<span className="hidden">이전</span>
+					</Button>
+					<Button type="text" icon={<RightOutlined />} onClick={onClickNext}>
+						<span className="hidden">다음</span>
+					</Button>
+				</SwiperButtons>
+				<SwiperPagination>
+					{Array(numberOfChildren)
+						.fill(0)
+						.map((_, index) => (
+							<PaginationButton
+								key={index}
+								onClick={() => onClickPagination(index)}
+								className={index === currentSlide ? 'on' : ''}
+							>
+								<span className="hidden">{index + 1}</span>
+							</PaginationButton>
+						))}
+				</SwiperPagination>
+			</Container>
+		</Wrapper>
+	);
 };
 
 export default CustomSlick;
