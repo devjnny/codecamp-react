@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <title>this의 이해</title>
+    <script>
+      class ClassCounterPage {
+        count = 10
+
+        onClickCountUp = () => {
+          //방법 1. 화살표 함수
+          console.log('현재 카운트: ', this.count)
+        }
+
+        render() {
+          const button = document.createElement('button')
+          button.innerText = '카운트 UP'
+          // button.addEventListener('click', this.onClickCountUp) // this.count = undefined, 버튼을 클릭해서 this.count를 찍으면 this의 context는 button인데 버튼에는 count 변수가 없어 this.count = undefined가 됨
+          button.addEventListener('click', this.onClickCountUp.bind(this)) //방법2. .bind(this)를 통해 this context를 직접 연결
+          document.body.appendChild(button)
+        }
+      }
+
+      window.onload = () => {
+        const counter = new ClassCounterPage()
+        counter.render()
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
