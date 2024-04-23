@@ -4,8 +4,6 @@ import {
 	IQueryFetchBoardsCountArgs
 } from '@/src/commons/types/generated/types';
 import { useQuery, gql } from '@apollo/client';
-import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const FETCH_BOARDS = gql`
@@ -19,20 +17,10 @@ const FETCH_BOARDS = gql`
 	}
 `;
 
-const FETCH_BOARDS_COUNT = gql`
-	query {
-		fetchBoardsCount
-	}
-`;
-
 export const Quiz10_01 = () => {
 	const { data, fetchMore } = useQuery<Pick<IQuery, 'fetchBoards'>, IQueryFetchBoardsArgs>(
 		FETCH_BOARDS
 	);
-	const { data: boardCount } = useQuery<
-		Pick<IQuery, 'fetchBoardsCount'>,
-		IQueryFetchBoardsCountArgs
-	>(FETCH_BOARDS_COUNT);
 
 	const onLoadMore = () => {
 		if (data === undefined) return;
