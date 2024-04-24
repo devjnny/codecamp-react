@@ -1,7 +1,14 @@
+import Pagination from '@/src/components/common/pagination/Pagination.container'
 import * as S from './BoardList.styles'
 import type { IBoardListProps } from './BoardList.types'
 
-export default function BoardListlUI({ data, onClickMove, onClickWrite }: IBoardListProps) {
+export default function BoardListlUI({
+	data,
+	refetch,
+	boardsCount,
+	onClickMove,
+	onClickWrite,
+}: IBoardListProps) {
 	return (
 		<S.Wrapper>
 			<S.Title>베스트 게시글</S.Title>
@@ -133,18 +140,7 @@ export default function BoardListlUI({ data, onClickMove, onClickWrite }: IBoard
 					</tbody>
 				</S.Table>
 				<S.TableFooter>
-					<S.Pagination>
-						<S.PaginationPrevButton type="button">
-							<span className="hidden">이전</span>
-						</S.PaginationPrevButton>
-						<S.Page type="button" className="active">
-							1
-						</S.Page>
-						<S.Page type="button">2</S.Page>
-						<S.PaginationNextButton type="button">
-							<span className="hidden">다음</span>
-						</S.PaginationNextButton>
-					</S.Pagination>
+					<Pagination refetch={refetch} boardsCount={boardsCount} />
 					<S.BoardWriteButton type="button" onClick={onClickWrite}>
 						게시물 등록하기
 					</S.BoardWriteButton>

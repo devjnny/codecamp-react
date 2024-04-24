@@ -179,37 +179,6 @@ export const TableFooter = styled.div`
 	position: relative;
 `
 
-export const Pagination = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 2rem;
-	margin-top: 5.4rem;
-`
-
-export const PaginationPrevButton = styled.button`
-	width: 2.4rem;
-	height: 2.4rem;
-	background: url(../icons/icon_arrow_left.png) no-repeat center/2.4rem 2.4rem;
-`
-
-export const PaginationNextButton = styled.button`
-	width: 2.4rem;
-	height: 2.4rem;
-	background: url(../icons/icon_arrow_right.png) no-repeat center/2.4rem 2.4rem;
-`
-
-export const Page = styled.button`
-	font-size: 1.6rem;
-	font-weight: 400;
-	line-height: 1.92rem;
-	color: #4f4f4f;
-
-	&.active {
-		color: #ffd600;
-		border-bottom: 1px solid #ffd600;
-	}
-`
-
 export const BoardWriteButton = styled.button`
 	position: absolute;
 	top: 4rem;
