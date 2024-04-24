@@ -1,5 +1,5 @@
-import Dialog from '../../common/Dialog'
-import Postcode from '../../common/Postcode'
+import Dialog from '../../../common/Dialog'
+import Postcode from '../../../common/Postcode'
 import * as S from './BoardWrite.styles'
 import type { IBoardWriteUIProps } from './BoardWrite.types'
 

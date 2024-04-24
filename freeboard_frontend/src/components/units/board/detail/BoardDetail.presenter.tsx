@@ -1,7 +1,7 @@
 import YouTube from 'react-youtube'
 import * as S from './BoardDetail.styles'
 import type { IBoardDetailProps } from './BoardDetail.types'
-import CommonTooltip from '../../common/Tooltip'
+import CommonTooltip from '../../../common/Tooltip'
 
 export default function BoardDetailUI({
 	data,

@@ -1,7 +1,7 @@
 import * as S from './BoardCommentList.styles'
 import type { IQuery, IBoardComment } from '@/src/commons/types/generated/types'
 import BoardCommentItem from '../comment/BoardCommentItem.container'
-import Dialog from '../../common/Dialog'
+import Dialog from '../../../common/Dialog'
 import type { ChangeEvent } from 'react'
 
 export default function BoardCommentListUI({
