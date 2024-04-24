@@ -1,8 +1,9 @@
 import * as S from './BoardCommentList.styles'
-import type { IQuery, IBoardComment } from '@/src/commons/types/generated/types'
+import type { IBoardComment } from '@/src/commons/types/generated/types'
 import BoardCommentItem from '../comment/BoardCommentItem.container'
 import Dialog from '../../../common/Dialog'
-import type { ChangeEvent } from 'react'
+import InfiniteScroll from 'react-infinite-scroller'
+import type { IBoardCommentListProps } from './BoardCommentList.types'
 
 export default function BoardCommentListUI({
 	comments,
@@ -11,16 +12,10 @@ export default function BoardCommentListUI({
 	handleDeleteDialogCancel,
 	onChangeDeletePassword,
 	onClickDelete,
-}: {
-	comments: Pick<IQuery, 'fetchBoardComments'>
-	isOpenDeleteDialog: boolean
-	handleDeleteDialog: (event?: any) => void
-	handleDeleteDialogCancel: () => void
-	onChangeDeletePassword: (event: ChangeEvent<HTMLInputElement>) => void
-	onClickDelete: () => Promise<void>
-}) {
+	onLoadMore,
+}: IBoardCommentListProps) {
 	return (
-		<S.CommentListWrapper>
+		<S.CommentListWrapper id="comment-list">
 			{isOpenDeleteDialog && (
 				<Dialog
 					title="비밀번호 입력"
@@ -30,9 +25,15 @@ export default function BoardCommentListUI({
 					<input type="password" style={{ width: '100%' }} onChange={onChangeDeletePassword} />
 				</Dialog>
 			)}
-			{comments?.fetchBoardComments?.map((comment: IBoardComment) => (
-				<BoardCommentItem key={comment._id} comment={comment} onClickDelete={handleDeleteDialog} />
-			))}
+			<InfiniteScroll pageStart={0} loadMore={onLoadMore} hasMore={true}>
+				{comments?.fetchBoardComments?.map((comment: IBoardComment) => (
+					<BoardCommentItem
+						key={comment._id}
+						comment={comment}
+						onClickDelete={handleDeleteDialog}
+					/>
+				))}
+			</InfiniteScroll>
 		</S.CommentListWrapper>
 	)
 }

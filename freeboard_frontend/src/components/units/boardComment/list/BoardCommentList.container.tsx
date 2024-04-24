@@ -22,7 +22,10 @@ export default function BoardCommentList() {
 		IMutationDeleteBoardCommentArgs
 	>(DELETE_BOARD_COMMENT)
 
-	const { data } = useQuery<Pick<IQuery, 'fetchBoardComments'>, IQueryFetchBoardCommentsArgs>(
+	const { data, fetchMore } = useQuery<
+		Pick<IQuery, 'fetchBoardComments'>,
+		IQueryFetchBoardCommentsArgs
+	>(
 		FETCH_BOARD_COMMENTS,
 		typeof router.query.boardId === 'string'
 			? {
@@ -32,6 +35,29 @@ export default function BoardCommentList() {
 				}
 			: { skip: true }
 	)
+
+	const onLoadMore = (): void => {
+		console.log('??')
+		if (data === undefined) return
+
+		void fetchMore({
+			variables: {
+				page: Math.ceil((data?.fetchBoardComments.length ?? 10) / 10) + 1,
+			},
+			updateQuery: (prev, { fetchMoreResult }) => {
+				if (!fetchMoreResult?.fetchBoardComments) {
+					return {
+						fetchBoardComments: [...prev.fetchBoardComments],
+					}
+				}
+
+				return {
+					fetchBoardComments: [...prev.fetchBoardComments, ...fetchMoreResult.fetchBoardComments],
+				}
+			},
+		})
+	}
+
 	const onChangeDeletePassword = (event: ChangeEvent<HTMLInputElement>) => {
 		setPassword(event.target.value)
 	}
@@ -78,6 +104,7 @@ export default function BoardCommentList() {
 			handleDeleteDialogCancel={handleDeleteDialogCancel}
 			onChangeDeletePassword={onChangeDeletePassword}
 			onClickDelete={onClickDelete}
+			onLoadMore={onLoadMore}
 		/>
 	) : (
 		<div>Loading...</div>

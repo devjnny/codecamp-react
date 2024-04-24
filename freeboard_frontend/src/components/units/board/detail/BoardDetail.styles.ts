@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
 	width: 120rem;
 	display: flex;
 	flex-direction: column;
-	margin: 3rem auto;
+	margin: 0 auto;
 `
 
 export const ContentWrapper = styled.div`

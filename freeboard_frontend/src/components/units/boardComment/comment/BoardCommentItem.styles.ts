@@ -4,6 +4,7 @@ export const CommentListItem = styled.div`
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
+	height: 120px;
 	padding: 1rem 0.4rem 2rem;
 	border-bottom: 1px solid #bdbdbd;
 
