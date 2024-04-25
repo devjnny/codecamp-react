@@ -9,6 +9,8 @@ export default function BoardListlUI({
 	onClickMove,
 	onClickWrite,
 }: IBoardListProps) {
+	const dateFormat = 'YYYY.MM.DD'
+
 	return (
 		<S.Wrapper>
 			<S.Title>베스트 게시글</S.Title>
@@ -100,7 +102,13 @@ export default function BoardListlUI({
 			</S.BestPosts>
 			<S.SearchSection>
 				<S.SearchInput type="text" placeholder="제목을 검색해주세요." />
-				<S.DateInput type="text" placeholder="YYYY.MM.DD ~ YYYY.MM.DD" />
+				<S.DateInput
+					placeholder={['YYYY.MM.DD', 'YYYY.MM.DD']}
+					suffixIcon={null}
+					placement={'bottomRight'}
+					format={dateFormat}
+					separator={<S.DateSeperator>~</S.DateSeperator>}
+				/>
 				<S.SearchButton type="button">검색하기</S.SearchButton>
 			</S.SearchSection>
 			<S.TableWrapper>

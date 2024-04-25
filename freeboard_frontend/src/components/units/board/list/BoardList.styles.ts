@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import { DatePicker } from 'antd'
+const { RangePicker } = DatePicker
 
 export const Wrapper = styled.div`
 	width: 120rem;
@@ -110,16 +112,27 @@ export const SearchInput = styled.input`
 	}
 `
 
-export const DateInput = styled.input`
+export const DateInput = styled(RangePicker)`
 	min-width: 25rem;
 	height: 5.2rem;
 	border: 1px solid #bdbdbd;
 	padding: 1.4rem 1.6rem;
-	&::placeholder {
+	input::placeholder {
 		font-size: 1.6rem;
+		line-height: 2.4rem;
 		font-weight: 400;
 		color: #bdbdbd;
 	}
+	&:hover {
+		border-color: initial;
+	}
+`
+
+export const DateSeperator = styled.span`
+	font-size: 1.6rem;
+	line-height: 2.4rem;
+	font-weight: 400;
+	color: #bdbdbd;
 `
 
 export const SearchButton = styled.button`
